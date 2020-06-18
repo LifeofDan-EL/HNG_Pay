@@ -126,8 +126,44 @@ class _LoginUI03State extends State<LoginUI03> {
                             ),
                           ),
                         ),
-////selected
 
+                        SizedBox(height: 20,),
+                        TextField(
+                          style: TextStyle(
+                              fontSize:16
+                          ),
+                          keyboardType: TextInputType.phone,
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            fillColor: Colors.grey[700].withOpacity(0.5),
+                            filled: true,
+                            hintText: 'Network Provider',
+                            hintStyle: TextStyle(
+                              color: Colors.grey[100],
+                            ),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                    color:Colors.white,
+                                    width: 2
+                                )
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                    color:Colors.grey,
+                                    width: 2
+                                )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                    color:Colors.white,
+                                    width: 2
+                                )
+                            ),
+                          ),
+                        ),
 
                       ],
                     ),
