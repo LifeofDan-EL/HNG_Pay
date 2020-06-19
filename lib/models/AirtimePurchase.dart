@@ -4,7 +4,7 @@ import 'dart:convert';
 class AirtimePurchase{
   final String code;
   final int amount;
-  final double phoneNumber;
+  final String phoneNumber;
 
   AirtimePurchase({this.code, this.amount, this.phoneNumber});
 
