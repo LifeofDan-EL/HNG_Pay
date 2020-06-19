@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
 
 class LoginUI03 extends StatefulWidget {
@@ -16,9 +17,9 @@ class Network {
 
   static List<Network> getNetworks(){
     return <Network> [
-      Network(1, 'MTN'),
-      Network(2, 'GLO'),
-      Network(3, 'AIRTEL'),
+      Network(1, 'mtn'),
+      Network(2, 'glo'),
+      Network(3, 'airtel'),
       Network(4, '9MOBILE'),
     ];
   }
@@ -32,6 +33,8 @@ class _LoginUI03State extends State<LoginUI03> {
   List<DropdownMenuItem<Network>> _dropdownMenuItems;
   Network _selectedNetwork;
 
+//  loadPurchase();
+
   @override
   void initState() {
     _dropdownMenuItems = buildDropDownMenuItems(_networks);
@@ -39,19 +42,20 @@ class _LoginUI03State extends State<LoginUI03> {
     super.initState();
   }
 
-  List<DropdownMenuItem<Network>>  buildDropDownMenuItems(List networks){
+  List<DropdownMenuItem<Network>> buildDropDownMenuItems(List networks) {
     List<DropdownMenuItem<Network>> items = List();
-    for (Network network in networks){
+    for (Network network in networks) {
       items.add(
-          DropdownMenuItem(
-            value: network,
-            child: Text(network.name),
-          ),
+        DropdownMenuItem(
+          value: network,
+          child: Text(network.name),
+        ),
       );
     }
     return items;
   }
-  onChangeDropdownItem(Network selectedNetwork){
+
+  onChangeDropdownItem(Network selectedNetwork) {
     setState(() {
       _selectedNetwork = selectedNetwork;
     });
@@ -59,8 +63,14 @@ class _LoginUI03State extends State<LoginUI03> {
 
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final double width = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Material(
       child: Container(
           decoration: BoxDecoration(
@@ -73,7 +83,7 @@ class _LoginUI03State extends State<LoginUI03> {
                 Positioned(
                   top: height * 0.1,
                   left: 50,
-                  right:50,
+                  right: 50,
                   child: FlutterLogo(
                       colors: Colors.lightGreen,
                       size: 100
@@ -104,7 +114,7 @@ class _LoginUI03State extends State<LoginUI03> {
                       children: <Widget>[
                         TextField(
                           style: TextStyle(
-                              fontSize:16,
+                            fontSize: 16,
                             color: Colors.white,
                           ),
                           cursorColor: Colors.white,
@@ -119,20 +129,20 @@ class _LoginUI03State extends State<LoginUI03> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide: BorderSide(
-                                    color:Colors.white,
+                                    color: Colors.white,
                                     width: 2
                                 )
                             ),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide: BorderSide(
-                                    color:Colors.grey,
+                                    color: Colors.grey,
                                     width: 2
                                 )),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide: BorderSide(
-                                    color:Colors.white,
+                                    color: Colors.white,
                                     width: 2
                                 )
                             ),
@@ -142,7 +152,7 @@ class _LoginUI03State extends State<LoginUI03> {
                         SizedBox(height: 20,),
                         TextField(
                           style: TextStyle(
-                              fontSize:16,
+                            fontSize: 16,
                             color: Colors.white,
                           ),
 
@@ -158,21 +168,21 @@ class _LoginUI03State extends State<LoginUI03> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide: BorderSide(
-                                    color:Colors.white,
+                                    color: Colors.white,
                                     width: 2
                                 )
                             ),
                             enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide: BorderSide(
-                                    color:Colors.grey,
+                                    color: Colors.grey,
                                     width: 2
                                 )
                             ),
                             focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide: BorderSide(
-                                    color:Colors.white,
+                                    color: Colors.white,
                                     width: 2
                                 )
                             ),
@@ -180,7 +190,7 @@ class _LoginUI03State extends State<LoginUI03> {
                         ),
                         SizedBox(height: 10,),
                         DropdownButton(
-                          style: TextStyle(color: Colors.white) ,
+                          style: TextStyle(color: Colors.white),
                           value: _selectedNetwork,
                           items: _dropdownMenuItems,
                           onChanged: onChangeDropdownItem,
@@ -196,10 +206,6 @@ class _LoginUI03State extends State<LoginUI03> {
                   ),
                 ),
 
-
-
-
-
                 Positioned(
                     top: height * 0.9,
                     child: Row(
@@ -209,7 +215,7 @@ class _LoginUI03State extends State<LoginUI03> {
                           height: height * 0.06,
                           child: RaisedButton(
                               splashColor: Colors.grey[200],
-                              onPressed: (){},
+                              onPressed: () {},
                               color: Colors.transparent,
                               child: Text(
                                 'ADD NUMBER',
@@ -219,21 +225,22 @@ class _LoginUI03State extends State<LoginUI03> {
                                 ),
                               ),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular((width *0.3) /2),
+                                  borderRadius: BorderRadius.circular((width *
+                                      0.3) / 2),
                                   side: BorderSide(
-                                      color:Colors.grey,
+                                      color: Colors.grey,
                                       width: 2
                                   )
                               )
 
                           ),
                         ),
-                        SizedBox(width:20),
+                        SizedBox(width: 20),
                         Container(
                           width: width * 0.37,
                           height: height * 0.06,
                           child: RaisedButton(
-                              onPressed: (){},
+                              onPressed: () {},
                               color: Colors.lightBlueAccent,
                               child: Text(
                                 'PURCHASE',
@@ -243,9 +250,10 @@ class _LoginUI03State extends State<LoginUI03> {
                                 ),
                               ),
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular((width *0.3) /2),
+                                  borderRadius: BorderRadius.circular((width *
+                                      0.3) / 2),
                                   side: BorderSide(
-                                      color:Colors.white,
+                                      color: Colors.white,
                                       width: 2
                                   )
                               )
