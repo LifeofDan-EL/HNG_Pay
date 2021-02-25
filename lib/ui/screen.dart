@@ -43,7 +43,7 @@ class _LoginUI03State extends State<LoginUI03> {
   }
 
   List<DropdownMenuItem<Network>> buildDropDownMenuItems(List networks) {
-    List<DropdownMenuItem<Network>> items = List();
+    List<DropdownMenuItem<Network>> items = [];
     for (Network network in networks) {
       items.add(
         DropdownMenuItem(
@@ -85,7 +85,7 @@ class _LoginUI03State extends State<LoginUI03> {
                   left: 50,
                   right: 50,
                   child: FlutterLogo(
-                      colors: Colors.lightGreen,
+                      textColor: Colors.lightGreen,
                       size: 100
                   ),
                 ),
@@ -213,6 +213,7 @@ class _LoginUI03State extends State<LoginUI03> {
                         Container(
                           width: width * 0.37,
                           height: height * 0.06,
+                          // ignore: deprecated_member_use
                           child: RaisedButton(
                               splashColor: Colors.grey[200],
                               onPressed: () {},
@@ -239,6 +240,7 @@ class _LoginUI03State extends State<LoginUI03> {
                         Container(
                           width: width * 0.37,
                           height: height * 0.06,
+                          // ignore: deprecated_member_use
                           child: RaisedButton(
                               onPressed: () {},
                               color: Colors.lightBlueAccent,
