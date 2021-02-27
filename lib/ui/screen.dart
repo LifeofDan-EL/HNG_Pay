@@ -1,274 +1,180 @@
-
+import 'package:HNG_Pay/vm/airtime_recharge_vm.dart';
+import 'package:HNG_Pay/widgets/text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/widgets.dart';
+import 'package:provider_architecture/provider_architecture.dart';
 
 class LoginUI03 extends StatefulWidget {
-
   @override
   _LoginUI03State createState() => _LoginUI03State();
 }
 
-class Network {
-  int id;
-  String name;
-
-  Network(this.id, this.name);
-
-  static List<Network> getNetworks(){
-    return <Network> [
-      Network(1, 'mtn'),
-      Network(2, 'glo'),
-      Network(3, 'airtel'),
-      Network(4, '9MOBILE'),
-    ];
-  }
-}
-
-
-
 class _LoginUI03State extends State<LoginUI03> {
+  get spacing => SizedBox(height: 20);
+  get spacingX2 => SizedBox(height: 20 * 2.0);
+  get spacingX4 => SizedBox(height: 20 * 4.0);
 
-  List<Network> _networks = Network.getNetworks();
-  List<DropdownMenuItem<Network>> _dropdownMenuItems;
-  Network _selectedNetwork;
-
-//  loadPurchase();
-
-  @override
-  void initState() {
-    _dropdownMenuItems = buildDropDownMenuItems(_networks);
-    _selectedNetwork = _dropdownMenuItems[0].value;
-    super.initState();
-  }
-
-  List<DropdownMenuItem<Network>> buildDropDownMenuItems(List networks) {
-    List<DropdownMenuItem<Network>> items = [];
-    for (Network network in networks) {
-      items.add(
-        DropdownMenuItem(
-          value: network,
-          child: Text(network.name),
-        ),
-      );
-    }
-    return items;
-  }
-
-  onChangeDropdownItem(Network selectedNetwork) {
-    setState(() {
-      _selectedNetwork = selectedNetwork;
-    });
-  }
+  TextEditingController phoneNumber = TextEditingController();
+  TextEditingController amount = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    final double width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    return Material(
-      child: Container(
-          decoration: BoxDecoration(
-              color: Colors.black
+    return ViewModelProvider<AirtimeRechargeViewModel>.withConsumer(
+      onModelReady: (model) => model.networkProviders(),
+      builder: (context, model, _) => Scaffold(
+        key: model.scaffoldKey,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          title: Text(
+            "Buy Airtime",
+            style: TextStyle(color: Colors.black, fontSize: 16),
           ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  top: height * 0.1,
-                  left: 50,
-                  right: 50,
-                  child: FlutterLogo(
-                      textColor: Colors.lightGreen,
-                      size: 100
-                  ),
+        ),
+        body: model.busy
+            ? Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.black),
                 ),
-                Positioned(
-                    top: height * 0.3,
-                    child: Container(
-                      width: width,
-                      child: Text(
-                          'Wallets.africa!',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 45,
-                              fontWeight: FontWeight.w700
-                          )
-                      ),
-                    )
-                ),
-
-                Positioned(
-                  top: height * 0.4,
-                  child: Container(
-                    width: width * 0.8,
-                    height: height * 0.4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        TextField(
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                          cursorColor: Colors.white,
-                          keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(
-                            fillColor: Colors.grey[700].withOpacity(0.5),
-                            filled: true,
-                            hintText: 'Number',
-                            hintStyle: TextStyle(
-                              color: Colors.grey[100],
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                    color: Colors.white,
-                                    width: 2
-                                )
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                    color: Colors.grey,
-                                    width: 2
-                                )),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                    color: Colors.white,
-                                    width: 2
-                                )
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(height: 20,),
-                        TextField(
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-
-                          keyboardType: TextInputType.phone,
-                          cursorColor: Colors.white,
-                          decoration: InputDecoration(
-                            fillColor: Colors.grey[700].withOpacity(0.5),
-                            filled: true,
-                            hintText: 'Amount',
-                            hintStyle: TextStyle(
-                              color: Colors.grey[100],
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                    color: Colors.white,
-                                    width: 2
-                                )
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                    color: Colors.grey,
-                                    width: 2
-                                )
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(
-                                    color: Colors.white,
-                                    width: 2
-                                )
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10,),
-                        DropdownButton(
-                          style: TextStyle(color: Colors.white),
-                          value: _selectedNetwork,
-                          items: _dropdownMenuItems,
-                          onChanged: onChangeDropdownItem,
-                        ),
-                        SizedBox(height: 10,),
-                        Text('Network Provider is ${_selectedNetwork.name}',
-                          style: TextStyle(
-                              color: Colors.white
-                          ),
-                        ),
-                      ],
+              )
+            : Form(
+                key: model.formKey,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
-                ),
-
-                Positioned(
-                    top: height * 0.9,
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          width: width * 0.37,
-                          height: height * 0.06,
-                          // ignore: deprecated_member_use
-                          child: RaisedButton(
-                              splashColor: Colors.grey[200],
-                              onPressed: () {},
-                              color: Colors.transparent,
-                              child: Text(
-                                'ADD NUMBER',
-                                style: TextStyle(
-                                    color: Colors.grey[200],
-                                    fontWeight: FontWeight.w500
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      height: 60,
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: model.networks.length,
+                              itemBuilder: (context, index) => Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    model.onSelectedNetwork(
+                                      model.networks[index],
+                                    );
+                                  },
+                                  child: Card(
+                                    // color: model.selected
+                                    //     ? Colors.black
+                                    //     : Colors.white,
+                                    child: Container(
+                                      height: 40,
+                                      width: 60,
+                                      child: Center(
+                                        child: Text(
+                                          model.networks[index].name,
+                                          // style: TextStyle(
+                                          //     color: model.selected
+                                          //         ? Colors.white
+                                          //         : Colors.black),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular((width *
-                                      0.3) / 2),
-                                  side: BorderSide(
-                                      color: Colors.grey,
-                                      width: 2
-                                  )
-                              )
-
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        Container(
-                          width: width * 0.37,
-                          height: height * 0.06,
-                          // ignore: deprecated_member_use
-                          child: RaisedButton(
-                              onPressed: () {},
-                              color: Colors.lightBlueAccent,
-                              child: Text(
-                                'PURCHASE',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    textField(
+                        controller: phoneNumber, labelText: "Phone Number"),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    textField(controller: amount, labelText: "Amount"),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            if (model.selected) {
+                              if (model.formKey.currentState.validate()) {
+                                await model.purchaseAirtime(
+                                  phoneNumber: phoneNumber.text,
+                                  amount: amount.text,
+                                  code: model.selectedNetwork.code,
+                                );
+                                if (model.failure != null) {
+                                  // ignore: deprecated_member_use
+                                  model.scaffoldKey.currentState.showSnackBar(
+                                    SnackBar(
+                                      content: Text(model.failure.message),
+                                      backgroundColor: Colors.redAccent,
+                                    ),
+                                  );
+                                } else {
+                                  // ignore: deprecated_member_use
+                                  model.scaffoldKey.currentState.showSnackBar(
+                                    SnackBar(
+                                      content: Text(model.message),
+                                      backgroundColor: Colors.greenAccent,
+                                    ),
+                                  );
+                                }
+                              }
+                              phoneNumber.clear();
+                              amount.clear();
+                              model.onSelectedNetwork();
+                            } else {
+                              // ignore: deprecated_member_use
+                              model.scaffoldKey.currentState.showSnackBar(
+                                SnackBar(
+                                  content: Text("Select a Provider"),
+                                  backgroundColor: Colors.redAccent,
                                 ),
+                              );
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0),
+                            child: Container(
+                              height: 55,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular((width *
-                                      0.3) / 2),
-                                  side: BorderSide(
-                                      color: Colors.white,
-                                      width: 2
-                                  )
-                              )
+                              child: Center(
+                                child: model.busy
+                                    ? CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Colors.white),
+                                      )
+                                    : Text(
+                                        "Purchase",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 16),
+                                      ),
+                              ),
+                            ),
                           ),
                         )
-
                       ],
                     )
+                  ],
                 ),
-              ],
-            ),
-          )
+              ),
       ),
+      viewModelBuilder: () => AirtimeRechargeViewModel(),
     );
   }
 }
